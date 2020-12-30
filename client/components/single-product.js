@@ -2,7 +2,7 @@ import React from 'react'
 import {connect} from 'react-redux'
 import {getSingleProduct} from '../store/singleProduct'
 import {addToCart} from '../store/cart'
-import {Card, Icon, Image} from 'semantic-ui-react'
+import {Card, Icon, Image, Select, Button} from 'semantic-ui-react'
 import makeTotalStr from '../../script/makeTotalStr'
 import {Link} from 'react-router-dom'
 
@@ -21,9 +21,9 @@ export class SingleProduct extends React.Component {
     this.props.getSingleProduct(this.state.productId)
   }
 
-  async handleSelect(e) {
+  async handleSelect(e, {value}) {
     await this.setState({
-      quantity: e.target.value
+      quantity: value
     })
   }
 
@@ -33,40 +33,49 @@ export class SingleProduct extends React.Component {
   }
 
   render() {
+    const qtyOptions = [
+      {key: '1', value: 1, text: '1'},
+      {key: '2', value: 2, text: '2'},
+      {key: '3', value: 3, text: '3'},
+      {key: '4', value: 4, text: '4'},
+      {key: '5', value: 5, text: '5'},
+      {key: '6', value: 6, text: '6'},
+      {key: '7', value: 7, text: '7'},
+      {key: '8', value: 8, text: '8'},
+      {key: '9', value: 9, text: '9'},
+      {key: '10', value: 10, text: '10'}
+    ]
     let product = this.props.product
     return (
       <div className="main-content-section">
         {product ? (
-          <Card centered>
+          <Card centered raised className="single-product">
             <Image src={product.imageUrl} wrapped ui={false} />
             <Card.Content>
               <Card.Header>{product.name.toUpperCase()}</Card.Header>
+              <Card.Meta>${makeTotalStr(product.price)}</Card.Meta>
               <Card.Description>{product.description}</Card.Description>
-              <Card.Meta>
-                <span className="date">${makeTotalStr(product.price)}</span>
-              </Card.Meta>
             </Card.Content>
             <Card.Content extra>
               <label htmlFor="qty-select">Quantity: </label>
-              <select
+              <Select
                 onChange={this.handleSelect}
+                options={qtyOptions}
                 name="quantity"
                 id="qty-select"
-              >
-                <option value={1}>1</option>
-                <option value={2}>2</option>
-                <option value={3}>3</option>
-                <option value={4}>4</option>
-                <option value={5}>5</option>
-                <option value={6}>6</option>
-                <option value={7}>7</option>
-                <option value={8}>8</option>
-                <option value={9}>9</option>
-                <option value={10}>10</option>
-              </select>
-              <button onClick={this.handleAddToCart} type="button">
-                Add To Cart
-              </button>
+                value={this.state.quantity}
+              />
+              <div>
+                <Button
+                  icon
+                  labelPosition="left"
+                  onClick={this.handleAddToCart}
+                  className="add-to-cart"
+                >
+                  <Icon name="shop" />
+                  Add To Cart
+                </Button>
+              </div>
             </Card.Content>
           </Card>
         ) : (

@@ -53,3 +53,11 @@ input.quantity-selection {
 #main-nav {
   margin-bottom: 15px;
 }
+
+.ui.button.add-to-cart {
+  margin-top: 1em;
+}
+
+.ui.centered.card.single-product {
+  min-width: 35%;
+}
